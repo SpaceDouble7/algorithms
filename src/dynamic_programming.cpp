@@ -1,5 +1,5 @@
 //
-// Created by Admin on 2015/11/20.
+// Created by Admin on 2015/11/21.
 //
 
 #include "dynamic_programming.h"
@@ -12,12 +12,12 @@
 // Qualifier:
 // Parameter: std::vector<int> sequence
 // Description:
-//	ÕâÊÇÇó½â¸ø¶¨ĞòÁĞµÄ×î´óµİÔöĞòÁĞµÄ³¤¶ÈµÄº¯Êı¡£
-//	Ö÷ÒªË¼Â·£º
-//		Ê¹ÓÃ¶¯Ì¬¹æ»®¡£¶¨ÒåÎÊÌâÎª:ÒÔj½ÚµãÎª½áÎ²µÄ×î´óµİÔöĞòÁĞµÄ³¤¶È¡£
-//	 ÔòÓĞµİÍÆ¹«Ê½£º
+//	è¿™æ˜¯æ±‚è§£ç»™å®šåºåˆ—çš„æœ€å¤§é€’å¢åºåˆ—çš„é•¿åº¦çš„å‡½æ•°ã€‚
+//	ä¸»è¦æ€è·¯ï¼š
+//		ä½¿ç”¨åŠ¨æ€è§„åˆ’ã€‚å®šä¹‰é—®é¢˜ä¸º:ä»¥jèŠ‚ç‚¹ä¸ºç»“å°¾çš„æœ€å¤§é€’å¢åºåˆ—çš„é•¿åº¦ã€‚
+//	 åˆ™æœ‰é€’æ¨å…¬å¼ï¼š
 //		L[j] = 1 + max(L[i]:i<j)
-//	 ´Ó¶øµÃµ½ÁË¶¯Ì¬¹æ»®µÄ×ÓÎÊÌâµÄÇó½â¹«Ê½¡£
+//	 ä»è€Œå¾—åˆ°äº†åŠ¨æ€è§„åˆ’çš„å­é—®é¢˜çš„æ±‚è§£å…¬å¼ã€‚
 //************************************
 std::vector<int> zy_d_p::longestIncreasingSubsequence(std::vector<int> sequence) {
     std::vector<int> L(sequence.size());
@@ -25,7 +25,7 @@ std::vector<int> zy_d_p::longestIncreasingSubsequence(std::vector<int> sequence)
     for (int idx = 0; idx < sequence.size(); ++idx) {
         int max_value = 0;
         int pos = -1;
-        // ÕâÀïÈç¹ûÊ¹ÓÃÁÚ½Ó±íÔò²»ĞèÒªÈ«²¿±éÀú
+        // è¿™é‡Œå¦‚æœä½¿ç”¨é‚»æ¥è¡¨åˆ™ä¸éœ€è¦å…¨éƒ¨éå†
         for (int _idx = 0; _idx < idx; ++_idx) {
             if (sequence[_idx] >= sequence[idx]) {
                 continue;
@@ -59,7 +59,8 @@ std::vector<int> zy_d_p::longestIncreasingSubsequence(std::vector<int> sequence)
 void zy_d_p::test_longestIncreasingSubsequence()
 {
     int b[] = {1,2,3,4,2,2,43,1,6,7,8,3,10};
-    std::vector<int> a(b, b + sizeof(b) / sizeof(int));
+
+    std::vector<int> a(std::begin(b), std::end(b));
     for (int idx = 0; idx < a.size(); ++idx) {
         std::cout << a[idx] << " ";
     }
@@ -80,27 +81,27 @@ void zy_d_p::test_longestIncreasingSubsequence()
 // Parameter: std::string s1
 // Parameter: std::string s2
 // Description:
-//	Çó½âÁ½¸öµ¥´Ê£¨×Ö·û´®£©µÄ±à¼­¾àÀë¡£
-//	Ê×ÏÈÕÒµ½×ÓÎÊÌâ£º
-//		¸ø¶¨Á½¸ö×Ö·û´®s1,s2,³¤¶È·Ö±ğÊÇiºÍj¡£
-//		Ô­ÎÊÌâ£ºÇódistance(s1[0:i], s2[0:j])
-//		×ÓÎÊÌâ£ºÇó½âdistance(s1[0:ii], s2[0:jj])
-//		µİÍÆ¹«Ê½£º
+//	æ±‚è§£ä¸¤ä¸ªå•è¯ï¼ˆå­—ç¬¦ä¸²ï¼‰çš„ç¼–è¾‘è·ç¦»ã€‚
+//	é¦–å…ˆæ‰¾åˆ°å­é—®é¢˜ï¼š
+//		ç»™å®šä¸¤ä¸ªå­—ç¬¦ä¸²s1,s2,é•¿åº¦åˆ†åˆ«æ˜¯iå’Œjã€‚
+//		åŸé—®é¢˜ï¼šæ±‚distance(s1[0:i], s2[0:j])
+//		å­é—®é¢˜ï¼šæ±‚è§£distance(s1[0:ii], s2[0:jj])
+//		é€’æ¨å…¬å¼ï¼š
 //		d[i][j] = min(1 + d[i-1][j], 1+d[i][j-1], diff(i,j)+d[i-1][j-1])
-//		¾ßÌåÒâÒå£º
-//		d[i][j]±íÊ¾s1[0:i],s2[0:j]Ö®¼äµÄ¾àÀë¡£
-//		Èı¸öÖµ·Ö±ğ±íÊ¾£ºs2[j]¶ÔÓ¦¿Õ,s1[i]¶ÔÓ¦¿Õ,s1[i],s2[j]¶ÔÓ¦¡£
+//		å…·ä½“æ„ä¹‰ï¼š
+//		d[i][j]è¡¨ç¤ºs1[0:i],s2[0:j]ä¹‹é—´çš„è·ç¦»ã€‚
+//		ä¸‰ä¸ªå€¼åˆ†åˆ«è¡¨ç¤ºï¼šs2[j]å¯¹åº”ç©º,s1[i]å¯¹åº”ç©º,s1[i],s2[j]å¯¹åº”ã€‚
 //************************************
 int zy_d_p::editDistance(std::string s1, std::string s2)
 {
-    // ¹¹Ôì´æ·Å¾àÀëµÄ±í
+    // æ„é€ å­˜æ”¾è·ç¦»çš„è¡¨
     std::vector<std::vector<int>> table;
     for (int idx = 0; idx <= s1.size(); ++ idx) {
         std::vector<int> t(s2.size() + 1);
         table.push_back(t);
     }
 
-    // ³õÊ¼»¯Ò»¸ö×Ö·û´®Îª¿ÕµÄ²¿·Ö
+    // åˆå§‹åŒ–ä¸€ä¸ªå­—ç¬¦ä¸²ä¸ºç©ºçš„éƒ¨åˆ†
     for (int idx = 0; idx < table.size(); ++ idx) {
         table[idx][0] = idx;
     }
@@ -109,7 +110,7 @@ int zy_d_p::editDistance(std::string s1, std::string s2)
     }
 
     // d[i][j] = min(1 + d[i-1][j], 1+d[i][j-1], diff(i,j)+d[i-1][j-1])
-    // ¸ù¾İµİÍÆ¹«Ê½½øĞĞÆäËûÖµµÄ¼ÆËã
+    // æ ¹æ®é€’æ¨å…¬å¼è¿›è¡Œå…¶ä»–å€¼çš„è®¡ç®—
     int diff = 0;
     for (int i = 1; i < table.size(); ++i) {
         for (int j = 1; j < table[0].size(); ++j) {
